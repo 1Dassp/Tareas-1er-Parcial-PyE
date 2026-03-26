@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tareas 1er Parcial Probabilidad y Estadística</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --primary: #1d4ed8;
+            --secondary: #3b82f6;
+            --text-main: #1e293b;
+            --border: #cbd5e1;
+            --accent: #dbeafe;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 1100px; margin: 0 auto; background: var(--surface); border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); overflow: hidden; }
+        h1 { text-align: center; color: var(--primary); padding: 20px; margin: 0; background: #f1f5f9; border-bottom: 1px solid var(--border);}
+        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px; margin-top: 30px;}
+        h3 { color: #334155; margin-top: 25px; }
+        
+        /* Pestañas */
+        .tab { overflow: hidden; border-bottom: 1px solid var(--border); background-color: #f1f5f9; display: flex; }
+        .tab button { background-color: inherit; flex: 1; border: none; outline: none; cursor: pointer; padding: 14px 16px; transition: 0.3s; font-size: 16px; font-weight: bold; color: #475569; }
+        .tab button:hover { background-color: #e2e8f0; }
+        .tab button.active { background-color: var(--surface); color: var(--primary); border-bottom: 3px solid var(--primary); }
+        .tabcontent { display: none; padding: 30px; animation: fadeEffect 0.5s; }
+        @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }
+
+        /* Contenidos */
+        .problem-statement { background-color: #eff6ff; border-left: 4px solid var(--secondary); padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0; }
+        .math-box { background: #f8fafc; padding: 20px; border: 1px solid var(--border); border-radius: 8px; margin: 15px 0; overflow-x: auto; }
+        .chart-wrapper { position: relative; height: 350px; width: 100%; margin: 20px 0; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;}
+        
+        /* Controles interactivos */
+        .controls { background: var(--accent); padding: 20px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #bfdbfe; }
+        .controls input[type=range] { width: 100%; margin-top: 10px; }
+        .explanation { font-size: 0.95em; color: #475569; margin-top: 10px; font-style: italic;}
+        
+        /* Diagrama de Venn CSS */
+        .venn-wrapper { position: relative; width: 350px; height: 300px; margin: 0 auto; font-size: 14px; font-weight: bold;}
+        .circle { position: absolute; width: 180px; height: 180px; border-radius: 50%; opacity: 0.5; mix-blend-mode: multiply;}
+        .c-e { background-color: #93c5fd; top: 0; left: 30px; }
+        .c-c { background-color: #fca5a5; top: 0; right: 30px; }
+        .c-l { background-color: #bbf7d0; bottom: 10px; left: 85px; }
+        .v-label { position: absolute; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Tareas 1er Parcial Probabilidad y Estadística</h1>
+
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Calabaza')">1. Flor de Calabaza</button>
+        <button class="tablinks" onclick="openTab(event, 'Probabilidad')">2. Probabilidad (Prob. 66)</button>
+        <button class="tablinks" onclick="openTab(event, 'Distribuciones')">3. Distribuciones</button>
+        <button class="tablinks" onclick="openTab(event, 'Covarianza')">4. Covarianza</button>
+    </div>
+
+    <div id="Calabaza" class="tabcontent" style="display: block;">
+        <h2>Análisis Estadístico: Flor de Calabaza</h2>
+        <div class="problem-statement">
+            <strong>Planteamiento del problema:</strong> Un granjero realiza un experimento con 5 plantas (P1–P5) durante 21 días. Cada día registra el número de flores masculinas y femeninas producidas por cada planta. El objetivo es describir la distribución de la producción entre plantas y observar cómo cambia con el tiempo.
+        </div>
+
+        <h3>Procedimiento Paso a Paso: Diagrama de Caja y Bigotes (Día 1)</h3>
+        <p>Para analizar la distribución, tomaremos la variable <strong>Total de flores</strong> producidas en el Día 1. Los datos recolectados de las 5 plantas fueron: 6, 4, 7, 6 y 5.</p>
+        
+        <div class="math-box">
+            <p><strong>Paso 1: Ordenar los datos</strong><br>
+            Arreglo ordenado: $4, 5, 6, 6, 7$</p>
+
+            <p><strong>Paso 2: Calcular la Mediana ($Q_2$)</strong><br>
+            Como tenemos $n=5$ (impar), la mediana es el valor exactamente en el centro.<br>
+            $\rightarrow Q_2 = 6$</p>
+
+            <p><strong>Paso 3: Calcular Cuartil 1 ($Q_1$) y Cuartil 3 ($Q_3$)</strong><br>
+            Separamos los datos en dos mitades, sin incluir la mediana.<br>
+            Mitad inferior ($4, 5$): Su centro es el promedio $\frac{4+5}{2} = 4.5 \rightarrow Q_1 = 4.5$<br>
+            Mitad superior ($6, 7$): Su centro es el promedio $\frac{6+7}{2} = 6.5 \rightarrow Q_3 = 6.5$</p>
+
+            <p><strong>Paso 4: Calcular el Rango Intercuartílico (RIC) y los Bigotes</strong><br>
+            El RIC mide la dispersión de la caja central: $RIC = Q_3 - Q_1 = 6.5 - 4.5 = 2$<br>
+            Para los bigotes, calculamos las cercas máximas (Tukey):<br>
+            Límite inferior = $Q_1 - (1.5 \times RIC) = 4.5 - 3 = 1.5$<br>
+            Límite superior = $Q_3 + (1.5 \times RIC) = 6.5 + 3 = 9.5$<br>
+            <strong>Conclusión:</strong> Como todos nuestros datos originales (del 4 al 7) están dentro del rango permitido (1.5 a 9.5), confirmamos que <strong>no hay valores atípicos</strong>. Los bigotes se dibujan desde el mínimo real (4) hasta el máximo real (7).</p>
+        </div>
+
+        <div class="grid-2">
+            <div>
+                <h3>Histograma A (Día 1)</h3>
+                <p>Este histograma representa la frecuencia de la producción de un solo día. La tabla de frecuencias es:<br>
+                - 4 flores: 1 planta<br>
+                - 5 flores: 1 planta<br>
+                - 6 flores: 2 plantas<br>
+                - 7 flores: 1 planta</p>
+                <div class="chart-wrapper"><canvas id="histA"></canvas></div>
+            </div>
+            <div>
+                <h3>Histograma B (Semana 1 - Agregado)</h3>
+                <p>Este histograma agrupa los datos de las 5 plantas durante los primeros 7 días ($n=35$ observaciones). Las frecuencias van desde producciones mínimas de 4 hasta máximas de 10 flores.</p>
+                <div class="chart-wrapper"><canvas id="histB"></canvas></div>
+            </div>
+        </div>
+
+        <h3>Interpretación de Resultados</h3>
+        <p>Al analizar de forma aislada el Día 1, observamos que las cinco plantas produjeron cantidades muy similares. La mediana se situó en 6 flores y el Rango Intercuartílico (RIC) fue de apenas 2, lo que indica una dispersión muy baja y confirma la ausencia total de valores atípicos. Sin embargo, al observar el Histograma B con los datos agregados de toda la primera semana, la distribución de barras se estira hacia la derecha, formando lo que en estadística se conoce como un <strong>sesgo positivo</strong> o asimetría hacia la derecha. Esto evidencia que, conforme avanzaron los días, el vigor de algunas plantas aumentó, logrando producciones de hasta 10 flores, lo que naturalmente incrementó la varianza y la dispersión general del cultivo en comparación con el primer día.</p>
+    </div>
+
+    <div id="Probabilidad" class="tabcontent">
+        <h2>Problema 66: Probabilidad Condicional y Regla de la Adición</h2>
+        <div class="problem-statement">
+            <strong>Planteamiento:</strong> Considere la siguiente información sobre vacacionistas:<br>
+            - 40% revisa su correo electrónico de trabajo.<br>
+            - 30% utiliza un teléfono celular.<br>
+            - 25% lleva una computadora portátil.<br>
+            - 23% revisa su correo electrónico y utiliza un celular.<br>
+            - 51% no revisa correo, no usa celular y tampoco lleva computadora.<br>
+            - 88 de cada 100 que llevan computadora portátil revisan su correo.<br>
+            - 70 de cada 100 que utilizan celular llevan computadora portátil.<br><br>
+            <strong>Objetivo:</strong> Calcular probabilidades condicionales específicas mediante dos métodos.
+        </div>
+
+        <h3>Traducción de variables e Intersecciones iniciales</h3>
+        <div class="math-box">
+            Definimos los eventos simples: $P(E) = 0.40$, $P(C) = 0.30$, $P(L) = 0.25$<br>
+            Intersección dada: $P(E \cap C) = 0.23$<br>
+            Probabilidades condicionales dadas en el texto: $P(E|L) = 0.88$ y $P(L|C) = 0.70$<br>
+            La probabilidad de la unión de los tres eventos se obtiene restando el 51% que no hace nada: 
+            $$P(E \cup C \cup L) = 1 - 0.51 = 0.49$$
+            Despejamos las intersecciones faltantes multiplicando la condicional por la probabilidad del evento dado:<br>
+            $$P(E \cap L) = P(E|L) \times P(L) = 0.88 \times 0.25 = 0.22$$
+            $$P(C \cap L) = P(L|C) \times P(C) = 0.70 \times 0.30 = 0.21$$
+            Para encontrar la intersección de los tres (el centro del diagrama), usamos la regla de la adición larga y despejamos:
+            $$P(E \cup C \cup L) = P(E) + P(C) + P(L) - P(E \cap C) - P(E \cap L) - P(C \cap L) + P(E \cap C \cap L)$$
+            $$0.49 = 0.40 + 0.30 + 0.25 - 0.23 - 0.22 - 0.21 + P(E \cap C \cap L)$$
+            $$0.49 = 0.29 + P(E \cap C \cap L) \quad \rightarrow \quad P(E \cap C \cap L) = 0.20$$
+        </div>
+
+        <div class="grid-2">
+            <div>
+                <h3>Método 1: Cálculo Analítico (Fórmulas)</h3>
+                <div class="math-box">
+                    <p><strong>a. ¿Probabilidad de que alguien que revisa correo también use celular?</strong><br>
+                    Nos piden $C$ dado $E$. Aplicamos la fórmula de probabilidad condicional:</p>
+                    $$P(C|E) = \frac{P(C \cap E)}{P(E)} = \frac{0.23}{0.40} = 0.575 \quad (57.5\%)$$
+
+                    <p><strong>b. ¿Probabilidad de que alguien con computadora también use celular?</strong><br>
+                    Nos piden $C$ dado $L$.</p>
+                    $$P(C|L) = \frac{P(C \cap L)}{P(L)} = \frac{0.21}{0.25} = 0.84 \quad (84\%)$$
+
+                    <p><strong>c. Si revisa correo y lleva computadora, ¿probabilidad de usar celular?</strong><br>
+                    Nos piden $C$ dado la intersección de $E$ y $L$.</p>
+                    $$P(C | E \cap L) = \frac{P(E \cap C \cap L)}{P(E \cap L)} = \frac{0.20}{0.22} \approx 0.9090 \quad (90.9\%)$$
+                </div>
+            </div>
+            <div>
+                <h3>Método 2: Solución por Diagramas de Venn</h3>
+                <p>Llenamos el diagrama comenzando desde el centro absoluto (0.20) hacia afuera, restando las intersecciones a cada círculo para obtener las regiones únicas.</p>
+                <div class="venn-wrapper">
+                    <div class="circle c-e"></div>
+                    <div class="circle c-c"></div>
+                    <div class="circle c-l"></div>
+                    <div class="v-label" style="top: -20px; left: 10px;">E (0.40)</div>
+                    <div class="v-label" style="top: -20px; right: 10px;">C (0.30)</div>
+                    <div class="v-label" style="bottom: -15px; left: 145px;">L (0.25)</div>
+                    <div class="v-label" style="bottom: -15px; right: -30px;">Ninguno: 0.51</div>
+                    <div class="v-label" style="top: 85px; left: 155px;">0.20</div> <div class="v-label" style="top: 35px; left: 155px;">0.03</div> <div class="v-label" style="top: 120px; left: 100px;">0.02</div> <div class="v-label" style="top: 120px; right: 100px;">0.01</div> <div class="v-label" style="top: 70px; left: 60px;">0.15</div> <div class="v-label" style="top: 70px; right: 60px;">0.06</div> <div class="v-label" style="bottom: 40px; left: 155px;">0.02</div> </div>
+                <div class="math-box">
+                    <p><strong>Resolviendo de forma visual:</strong> La probabilidad condicional en un diagrama de Venn se obtiene sumando las sub-regiones buscadas y dividiéndolas entre el nuevo "universo" que impone la condición.</p>
+                    <p><strong>a.</strong> Dentro del círculo de Correo ($E=0.40$), las regiones que tocan al Celular son $0.03 + 0.20$.<br>
+                    $\rightarrow \frac{0.23}{0.40} = 0.575$</p>
+                    <p><strong>b.</strong> Dentro del círculo Laptop ($L=0.25$), las regiones que tocan al Celular son $0.01 + 0.20$.<br>
+                    $\rightarrow \frac{0.21}{0.25} = 0.84$</p>
+                    <p><strong>c.</strong> La condición es la intersección de Correo y Laptop, esa "hojita" suma $0.02 + 0.20 = 0.22$. Dentro de ella, lo que pertenece al celular es solo el centro absoluto ($0.20$).<br>
+                    $\rightarrow \frac{0.20}{0.22} = 0.9090$</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Distribuciones" class="tabcontent">
+        <h2>Las 5 Distribuciones Fundamentales en Ciencias de la Computación</h2>
+        
+        <div class="grid-2">
+            <div>
+                <h3>1. Distribución Normal (Gaussiana)</h3>
+                <p><strong>Concepto Completo:</strong> Es la distribución continua más importante en la teoría de la probabilidad. Se caracteriza por su forma de campana simétrica, definida completamente por su media ($\mu$) y su desviación estándar ($\sigma$). El Teorema del Límite Central establece que la suma de muchas variables independientes tiende a seguir esta distribución, sin importar su distribución original.</p>
+                <p><strong>Ejemplo en Computación:</strong> Al analizar el tiempo de ejecución de un algoritmo de ordenamiento como <em>QuickSort</em> en miles de arreglos aleatorios, la mayoría de los tiempos se agruparán alrededor de una media central, con muy pocas ejecuciones terminando anormalmente rápido o excesivamente lento.</p>
+                <div class="chart-wrapper" style="height: 250px;"><canvas id="chartNormal"></canvas></div>
+            </div>
+
+            <div>
+                <h3>2. Distribución Uniforme (Continua)</h3>
+                <p><strong>Concepto Completo:</strong> Describe un modelo probabilístico en el que todos los resultados dentro de un intervalo cerrado $[a, b]$ son equiprobables. Gráficamente, su función de densidad de probabilidad forma un rectángulo perfecto. No hay picos ni agrupamientos de datos en el centro.</p>
+                <p><strong>Ejemplo en Computación:</strong> La inicialización de pesos en una red neuronal simple utilizando una función generadora de números pseudoaleatorios como <code>Math.random()</code>, donde cualquier valor decimal entre $0.0$ y $1.0$ tiene matemáticamente la misma probabilidad estricta de ser generado.</p>
+                <div class="chart-wrapper" style="height: 250px;"><canvas id="chartUnif"></canvas></div>
+            </div>
+            
+            <div style="grid-column: span 2;">
+                <h3>3. Distribución Exponencial</h3>
+                <p><strong>Concepto Completo:</strong> Es una distribución continua que modela el tiempo de espera o la distancia entre eventos sucesivos en un proceso de Poisson (eventos independientes que ocurren a una tasa constante). Tiene la propiedad única de "falta de memoria": la probabilidad de que ocurra un evento en el futuro no depende de cuánto tiempo haya pasado ya.</p>
+                <p><strong>Ejemplo en Computación:</strong> La predicción del tiempo de vida útil de un componente físico de hardware (como un disco duro HDD en un clúster de servidores). La probabilidad de falla disminuye exponencialmente a medida que consideramos lapsos de tiempo más largos sin que haya fallado aún.</p>
+                <div class="chart-wrapper" style="height: 200px;"><canvas id="chartExp"></canvas></div>
+            </div>
+
+            <div>
+                <h3>4. Distribución de Poisson (Ejemplo Interactivo)</h3>
+                <p><strong>Concepto Completo:</strong> Distribución discreta que expresa la probabilidad de que ocurra un determinado número de eventos independientes ($k$) en un intervalo de tiempo fijo. Depende de un solo parámetro: la tasa media de ocurrencia ($\lambda$).</p>
+                <p><strong>Ejemplo en Computación:</strong> Número de peticiones HTTP (requests) que recibe un balanceador de carga por segundo.</p>
+                
+                <div class="controls">
+                    <label><strong>Mueve la Tasa Media ($\lambda$):</strong> <span id="l-val" style="font-weight: bold; color: var(--primary); font-size:1.2em;">3</span> peticiones por segundo</label>
+                    <input type="range" id="poisson-l" min="1" max="15" step="1" value="3">
+                    <div class="explanation"><strong>Observa:</strong> Al aumentar la tasa media $\lambda$, el pico de probabilidad más alto se desplaza hacia la derecha. La gráfica se vuelve más "ancha" porque hay más variabilidad en los resultados posibles.</div>
+                </div>
+                <div class="chart-wrapper" style="height: 250px;"><canvas id="chartPoisson"></canvas></div>
+            </div>
+
+            <div>
+                <h3>5. Distribución Binomial (Ejemplo Interactivo)</h3>
+                <p><strong>Concepto Completo:</strong> Modela el número de "éxitos" en una secuencia de $n$ ensayos independientes (ensayos de Bernoulli). En cada ensayo, solo hay dos resultados posibles (éxito o fracaso) y la probabilidad de éxito ($p$) es constante.</p>
+                <p><strong>Ejemplo en Computación:</strong> Enviamos $n=10$ paquetes de datos a través de una red UDP (que no garantiza entrega). Queremos saber la probabilidad de que lleguen intactos exactamente $k$ paquetes.</p>
+                
+                <div class="controls">
+                    <label><strong>Probabilidad de éxito ($p$) por paquete:</strong> <span id="p-val" style="font-weight: bold; color: var(--primary); font-size:1.2em;">0.5</span> (50%)</label>
+                    <input type="range" id="binom-p" min="0.1" max="0.9" step="0.1" value="0.5">
+                    <div class="explanation"><strong>Observa:</strong> Si reduces la probabilidad a 0.1, es casi seguro que lleguen 0 o 1 paquetes. Si la subes a 0.9, la gráfica se concentra en el 9 y 10. Solo en $p=0.5$ la gráfica es perfectamente simétrica.</div>
+                </div>
+                <div class="chart-wrapper" style="height: 250px;"><canvas id="chartBinom"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Covarianza" class="tabcontent">
+        <h2>Problemas y Procedimiento de Covarianza</h2>
+        
+        <div class="grid-2">
+            <div>
+                <h3>Problema 1: Covarianza Positiva</h3>
+                <div class="problem-statement">
+                    <strong>Planteamiento:</strong> Un líder de proyecto de software quiere saber si existe relación lineal entre la cantidad de horas ininterrumpidas que sus ingenieros pasan programando (Variable $X$) y la cantidad de errores de sintaxis cometidos (Variable $Y$).<br><br>
+                    <strong>Datos de muestra ($n=3$):</strong><br>
+                    - Sesión 1: 2 horas, 1 error<br>
+                    - Sesión 2: 4 horas, 2 errores<br>
+                    - Sesión 3: 6 horas, 6 errores
+                </div>
+                
+                <div class="math-box">
+                    <p><strong>Paso 1: Calcular los promedios (medias)</strong></p>
+                    $$\bar{X} = \frac{2 + 4 + 6}{3} = \frac{12}{3} = 4 \text{ horas}$$ 
+                    $$\bar{Y} = \frac{1 + 2 + 6}{3} = \frac{9}{3} = 3 \text{ errores}$$
+                    
+                    <p><strong>Paso 2: Calcular las diferencias respecto a la media y multiplicarlas</strong><br>
+                    La fórmula exige sumar $(x_i - \bar{x})(y_i - \bar{y})$ para cada punto:</p>
+                    Sesión 1: $(2-4) \times (1-3) = (-2) \times (-2) = 4$<br>
+                    Sesión 2: $(4-4) \times (2-3) = (0) \times (-1) = 0$<br>
+                    Sesión 3: $(6-4) \times (6-3) = (2) \times (3) = 6$
+                    
+                    <p><strong>Paso 3: Sumar y dividir entre la muestra menos uno ($n-1$)</strong></p>
+                    $$Cov(X,Y) = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{n-1}$$
+                    $$Cov(X,Y) = \frac{4 + 0 + 6}{3-1} = \frac{10}{2} = 5$$
+                </div>
+                <p><strong>Interpretación:</strong> La covarianza obtenida es de <strong>5</strong>. Al ser un valor <strong>positivo</strong>, demuestra matemáticamente que ambas variables tienden a crecer de forma conjunta. A más fatiga (horas seguidas programando), mayor es el volumen de errores cometidos por los desarrolladores.</p>
+            </div>
+
+            <div>
+                <h3>Problema 2: Covarianza Negativa</h3>
+                <div class="problem-statement">
+                    <strong>Planteamiento:</strong> Al probar un algoritmo de inteligencia artificial, medimos la relación entre la cantidad de iteraciones de optimización de pesos aplicadas (Variable $X$) y el tiempo de respuesta del algoritmo en milisegundos (Variable $Y$).<br><br>
+                    <strong>Datos de muestra ($n=3$):</strong><br>
+                    - Algoritmo A: 1 iteración, tiempo 8 ms<br>
+                    - Algoritmo B: 3 iteraciones, tiempo 4 ms<br>
+                    - Algoritmo C: 5 iteraciones, tiempo 0 ms
+                </div>
+                
+                <div class="math-box">
+                    <p><strong>Paso 1: Calcular los promedios (medias)</strong></p>
+                    $$\bar{X} = \frac{1 + 3 + 5}{3} = \frac{9}{3} = 3 \text{ iteraciones}$$ 
+                    $$\bar{Y} = \frac{8 + 4 + 0}{3} = \frac{12}{3} = 4 \text{ ms}$$
+                    
+                    <p><strong>Paso 2: Calcular las diferencias respecto a la media y multiplicarlas</strong></p>
+                    Algoritmo A: $(1-3) \times (8-4) = (-2) \times (4) = -8$<br>
+                    Algoritmo B: $(3-3) \times (4-4) = (0) \times (0) = 0$<br>
+                    Algoritmo C: $(5-3) \times (0-4) = (2) \times (-4) = -8$
+                    
+                    <p><strong>Paso 3: Sumar y dividir entre la muestra menos uno ($n-1$)</strong></p>
+                    $$Cov(X,Y) = \frac{-8 + 0 - 8}{3-1} = \frac{-16}{2} = -8$$
+                </div>
+                <p><strong>Interpretación:</strong> La covarianza obtenida es de <strong>-8</strong>. Al ser un valor <strong>negativo</strong>, indica que las variables son inversamente proporcionales. A mayor cantidad de iteraciones de optimización en el entrenamiento, menor es el tiempo que demora la red neuronal en devolver un resultado.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // LÓGICA DE PESTAÑAS (TABS)
+    // ==========================================
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // ==========================================
+    // FUNCIONES MATEMÁTICAS UTILITARIAS
+    // ==========================================
+    function factorial(n) { return n <= 1 ? 1 : n * factorial(n - 1); }
+    function combinatoria(n, k) { return factorial(n) / (factorial(k) * factorial(n - k)); }
+
+    // ==========================================
+    // INICIALIZACIÓN DE GRÁFICAS Y CONTROLES
+    // ==========================================
+    window.onload = function() {
+        
+        // --- SECCIÓN 1: CALABAZA ---
+        new Chart(document.getElementById('histA'), {
+            type: 'bar',
+            data: { 
+                labels: ['4 flores', '5 flores', '6 flores', '7 flores'], 
+                datasets: [{ label: 'Número de Plantas', data: [1, 1, 2, 1], backgroundColor: 'rgba(59, 130, 246, 0.8)' }] 
+            },
+            options: { maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 3 } } }
+        });
+
+        new Chart(document.getElementById('histB'), {
+            type: 'bar',
+            data: { 
+                labels: ['4', '5', '6', '7', '8', '9', '10'], 
+                datasets: [{ label: 'Frecuencia Acumulada', data: [1, 5, 10, 10, 5, 3, 1], backgroundColor: 'rgba(16, 185, 129, 0.8)' }] 
+            },
+            options: { maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+        });
+
+        // --- SECCIÓN 3: DISTRIBUCIONES ---
+        
+        // 1. Normal (Estática)
+        const normX = Array.from({length: 60}, (_, i) => -3 + i * 0.1);
+        const normY = normX.map(x => Math.exp(-0.5 * x * x) / Math.sqrt(2 * Math.PI));
+        new Chart(document.getElementById('chartNormal'), {
+            type: 'line',
+            data: { 
+                labels: normX.map(x=>x.toFixed(1)), 
+                datasets: [{ label: 'Normal Estándar (\u03BC=0, \u03C3=1)', data: normY, borderColor: '#8b5cf6', backgroundColor: 'rgba(139, 92, 246, 0.2)', fill: true, pointRadius: 0 }] 
+            },
+            options: { maintainAspectRatio: false, scales: { x: { display: false } } }
+        });
+
+        // 2. Uniforme (Estática)
+        new Chart(document.getElementById('chartUnif'), {
+            type: 'bar',
+            data: { 
+                labels: ['[0.0 - 0.2)', '[0.2 - 0.4)', '[0.4 - 0.6)', '[0.6 - 0.8)', '[0.8 - 1.0]'], 
+                datasets: [{ label: 'Probabilidad Constante', data: [0.2, 0.2, 0.2, 0.2, 0.2], backgroundColor: '#f59e0b', barPercentage: 1.0, categoryPercentage: 1.0 }] 
+            },
+            options: { maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 0.3 } } }
+        });
+
+        // 3. Exponencial (Estática)
+        const expX = Array.from({length: 40}, (_, i) => i * 0.1);
+        const expY = expX.map(x => Math.exp(-x));
+        new Chart(document.getElementById('chartExp'), {
+            type: 'line',
+            data: { 
+                labels: expX.map(x=>x.toFixed(1)), 
+                datasets: [{ label: 'Decaimiento Exponencial', data: expY, borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.2)', fill: true, pointRadius: 0 }] 
+            },
+            options: { maintainAspectRatio: false, scales: { x: { display: false } } }
+        });
+
+        // 4. Poisson (Dinámica / Interactiva)
+        let poissChart = new Chart(document.getElementById('chartPoisson'), {
+            type: 'bar',
+            data: { 
+                labels: Array.from({length: 20}, (_, i) => i), 
+                datasets: [{ label: 'Probabilidad P(X=k)', backgroundColor: '#d946ef', data: [] }] 
+            },
+            options: { maintainAspectRatio: false, scales: { y: { min: 0, max: 0.4 } } }
+        });
+        
+        function updatePoisson() {
+            let lambda = parseInt(document.getElementById('poisson-l').value);
+            document.getElementById('l-val').innerText = lambda;
+            let data = [];
+            for(let k=0; k<=19; k++) { 
+                data.push((Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k)); 
+            }
+            poissChart.data.datasets[0].data = data;
+            poissChart.update();
+        }
+        document.getElementById('poisson-l').addEventListener('input', updatePoisson);
+        updatePoisson(); // Dibujar por primera vez
+
+        // 5. Binomial (Dinámica / Interactiva)
+        let binomChart = new Chart(document.getElementById('chartBinom'), {
+            type: 'bar',
+            data: { 
+                labels: Array.from({length: 11}, (_, i) => i), 
+                datasets: [{ label: 'Probabilidad P(X=k) éxitos', backgroundColor: '#0ea5e9', data: [] }] 
+            },
+            options: { maintainAspectRatio: false, scales: { y: { min: 0, max: 0.4 } } }
+        });
+        
+        function updateBinomial() {
+            let p = parseFloat(document.getElementById('binom-p').value);
+            document.getElementById('p-val').innerText = p.toFixed(1);
+            let data = [];
+            for(let k=0; k<=10; k++) { 
+                data.push(combinatoria(10, k) * Math.pow(p, k) * Math.pow(1-p, 10-k)); 
+            }
+            binomChart.data.datasets[0].data = data;
+            binomChart.update();
+        }
+        document.getElementById('binom-p').addEventListener('input', updateBinomial);
+        updateBinomial(); // Dibujar por primera vez
+    };
+</script>
+
+</body>
+</html>
